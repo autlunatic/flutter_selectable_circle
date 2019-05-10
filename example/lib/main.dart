@@ -28,6 +28,7 @@ class _MyHomeState extends State<MyHome> {
   bool _isSelected = false;
   bool _isSelected2 = false;
   bool _isSelected3 = false;
+  bool _isSelected4 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +45,7 @@ class _MyHomeState extends State<MyHome> {
               color: Colors.brown,
               selectedBorderColor: Colors.orange,
               selectedColor: Colors.tealAccent,
+              selectMode: SelectMode.simple,
               onSelected: () {
                 setState(() {
                   _isSelected2 = !_isSelected2;
@@ -73,6 +75,25 @@ class _MyHomeState extends State<MyHome> {
               onSelected: () {
                 setState(() {
                   _isSelected3 = !_isSelected3;
+                });
+              },
+            ),
+          ),
+          Center(child: Text("empty Circle")),
+          Center(
+            child: SelectableCircle(
+              color: Colors.redAccent,
+              borderColor: Colors.red,
+              isSelected: _isSelected4,
+              selectMode: SelectMode.check,
+              width: 80.0,
+              child: Icon(
+                Icons.tag_faces,
+                size: 40.0,
+              ),
+              onSelected: () {
+                setState(() {
+                  _isSelected4 = !_isSelected4;
                 });
               },
             ),

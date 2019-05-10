@@ -15,7 +15,9 @@ class SelectableCircle extends StatelessWidget {
     this.borderColor,
     this.selectedColor,
     this.selectedBorderColor,
+    SelectMode selectMode,
   })  : isSelected = isSelected ?? false,
+        selectMode = selectMode ?? SelectMode.animatedCircle,
         child = child ?? Container(),
         super(key: key);
 
@@ -38,23 +40,19 @@ class SelectableCircle extends StatelessWidget {
   final Color borderColor;
 
   /// Color of the circle when selected
-  ///
-  /// this option also disables the animation!
   final Color selectedColor;
 
   /// Color of the border when selected
-  ///
-  /// this option also disables the animation!
   final Color selectedBorderColor;
+
+  final SelectMode selectMode;
 
   @override
   Widget build(BuildContext context) {
-    final hasSelectedColors =
-        selectedBorderColor != null || selectedColor != null;
-    final c = isSelected
+    final c = isSelected && selectMode != SelectMode.check
         ? selectedColor ?? Theme.of(context).backgroundColor
         : color ?? Theme.of(context).scaffoldBackgroundColor;
-    final bc = isSelected
+    final bc = isSelected && selectMode != SelectMode.check
         ? selectedBorderColor ?? Theme.of(context).buttonColor
         : borderColor ?? Theme.of(context).textTheme.body1.color;
     final borderWidth = isSelected ? 4.0 : 1.0;
@@ -62,21 +60,32 @@ class SelectableCircle extends StatelessWidget {
     return GestureDetector(
       child: Stack(
         children: [
-          if (!hasSelectedColors)
+          if (selectMode == SelectMode.animatedCircle)
             isSelected
-                ? _buildSpinningAnimation(bc, "Spinning Circle")
+                ? _buildSpinningAnimation("Spinning Circle")
                 // i draw a smaller idle Animation below the not selected Circle
                 // for smoother click feeling, because
                 // flare flashes when it is built with animation,
                 // maybe there is a better solution, or the flare file needs to be updated
-                : _buildSpinningAnimation(bc, "idle"),
-          if (hasSelectedColors || !isSelected)
+                : _buildSpinningAnimation("idle"),
+          if (selectMode != SelectMode.animatedCircle || !isSelected)
             _buildCircle(c, bc, borderWidth),
           Container(
             height: width,
             width: width,
             child: Center(child: child),
           ),
+          if (selectMode == SelectMode.check)
+            Container(
+              height: width,
+              width: width,
+              child: Align(
+                alignment: Alignment(0.85, 0.85),
+                child: isSelected
+                    ? _buildSpinningAnimation("Check", fixedWidth: 40.0)
+                    : _buildSpinningAnimation("idle", fixedWidth: 0.0),
+              ),
+            ),
         ],
       ),
       onTap: () => _select(),
@@ -105,15 +114,18 @@ class SelectableCircle extends StatelessWidget {
     }
   }
 
-  Widget _buildSpinningAnimation(Color borderColor, String animation) {
+  Widget _buildSpinningAnimation(String animation, {double fixedWidth}) {
     final edgeinsets = (animation == 'idle') ? 10.0 : 4.0;
+    final asset = fixedWidth != null
+        ? "packages/selectable_circle/flare/check.flr"
+        : "packages/selectable_circle/flare/spinning.flr";
 
     return Container(
       padding: EdgeInsets.all(edgeinsets),
-      width: width,
-      height: width,
+      width: fixedWidth ?? width,
+      height: fixedWidth ?? width,
       child: Center(
-        child: FlareActor("packages/selectable_circle/flare/spinning.flr",
+        child: FlareActor(asset,
             alignment: Alignment.center,
             fit: BoxFit.fitHeight,
             animation: animation),
@@ -121,3 +133,5 @@ class SelectableCircle extends StatelessWidget {
     );
   }
 }
+
+enum SelectMode { simple, animatedCircle, check }
