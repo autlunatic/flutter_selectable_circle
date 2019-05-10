@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "selectable_circle_text",
+        title: "selectable_circle",
         home: MyHome(),
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -32,7 +32,7 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("example circle_text"),
+        title: Text("example circle"),
       ),
       body: Column(
         children: <Widget>[

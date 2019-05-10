@@ -1,4 +1,4 @@
-# selectable_circle_text
+# selectable_circle
 
 A Flutter package for an Circle that can be Selected with animation.
 
