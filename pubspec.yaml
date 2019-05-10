@@ -1,6 +1,6 @@
 name: selectable_circle
 description: A new Flutter package project.
-version: 0.0.1
+version: 0.0.2
 author: autlunatic <autlunatic@gmail.com>
 homepage: https://github.com/autlunatic/flutter_selectable_circle
 
@@ -23,7 +23,7 @@ dev_dependencies:
 flutter:
   # To add assets to your package, add an assets section, like this:
   assets:
-    - packages/selectable_circle_text/flare/spinning.flr
+    - packages/selectable_circle/flare/spinning.flr
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg

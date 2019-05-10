@@ -113,7 +113,7 @@ class SelectableCircle extends StatelessWidget {
       width: width,
       height: width,
       child: Center(
-        child: FlareActor("packages/selectable_circle_text/flare/spinning.flr",
+        child: FlareActor("packages/selectable_circle/flare/spinning.flr",
             alignment: Alignment.center,
             fit: BoxFit.fitHeight,
             animation: animation),
