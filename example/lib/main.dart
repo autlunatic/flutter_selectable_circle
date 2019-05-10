@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selectable_circle_text/selectable_circle_text.dart';
+import 'package:selectable_circle/selectable_circle.dart';
 
 void main() => runApp(MyApp());
 

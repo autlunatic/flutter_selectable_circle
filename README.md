@@ -18,6 +18,8 @@ A Flutter package for an Circle that can be Selected with animation.
 
 <img src="https://github.com/autlunatic/flutter_selectable_circle/blob/master/screenshots/sc.png?raw=true" width="240"/>
 
+<img src="https://github.com/autlunatic/flutter_selectable_circle/blob/master/screenshots/sc.gif?raw=true" width="240"/>
+
 ## Parameters
 
         /// the width and height of the CircleWidget

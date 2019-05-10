@@ -95,7 +95,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  selectable_circle_text:
+  selectable_circle:
     dependency: "direct main"
     description:
       path: ".."
