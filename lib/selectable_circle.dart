@@ -45,6 +45,12 @@ class SelectableCircle extends StatelessWidget {
   /// Color of the border when selected
   final Color selectedBorderColor;
 
+  /// changes the selectmode
+  ///
+  /// Possible Values:
+  /// simple: no animation, only SelectedColor is used
+  /// animatedCircle: Animation is used
+  /// check: Check Icon Animation is used
   final SelectMode selectMode;
 
   @override
