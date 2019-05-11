@@ -29,6 +29,7 @@ class _MyHomeState extends State<MyHome> {
   bool _isSelected2 = false;
   bool _isSelected3 = false;
   bool _isSelected4 = false;
+  bool _isSelected5 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,7 @@ class _MyHomeState extends State<MyHome> {
               selectedBorderColor: Colors.orange,
               selectedColor: Colors.tealAccent,
               selectMode: SelectMode.simple,
-              onSelected: () {
+              onTap: () {
                 setState(() {
                   _isSelected2 = !_isSelected2;
                 });
@@ -59,7 +60,7 @@ class _MyHomeState extends State<MyHome> {
             child: SelectableCircle(
               width: 80.0,
               isSelected: _isSelected,
-              onSelected: () {
+              onTap: () {
                 setState(() {
                   _isSelected = !_isSelected;
                 });
@@ -67,19 +68,22 @@ class _MyHomeState extends State<MyHome> {
               child: Text("test"),
             ),
           ),
-          Center(child: Text("empty Circle")),
+          Center(child: Text("empty Circle custom colors")),
           Center(
             child: SelectableCircle(
               isSelected: _isSelected3,
+              borderColor: Colors.greenAccent,
+              selectedColor: Colors.blue,
+              selectedBorderColor: Colors.red[900],
               width: 80.0,
-              onSelected: () {
+              onTap: () {
                 setState(() {
                   _isSelected3 = !_isSelected3;
                 });
               },
             ),
           ),
-          Center(child: Text("empty Circle")),
+          Center(child: Text("SelectMode.check Circle")),
           Center(
             child: SelectableCircle(
               color: Colors.redAccent,
@@ -91,9 +95,30 @@ class _MyHomeState extends State<MyHome> {
                 Icons.tag_faces,
                 size: 40.0,
               ),
-              onSelected: () {
+              onTap: () {
                 setState(() {
                   _isSelected4 = !_isSelected4;
+                });
+              },
+            ),
+          ),
+          Center(child: Text("SelectMode.check Circle custom colors")),
+          Center(
+            child: SelectableCircle(
+              color: Colors.redAccent,
+              borderColor: Colors.red,
+              isSelected: _isSelected5,
+              selectMode: SelectMode.check,
+              selectedColor: Colors.white,
+              selectedBorderColor: Colors.blue,
+              width: 80.0,
+              child: Icon(
+                Icons.watch_later,
+                size: 40.0,
+              ),
+              onTap: () {
+                setState(() {
+                  _isSelected5 = !_isSelected5;
                 });
               },
             ),

@@ -1,14 +1,21 @@
 library selectable_circle;
 
+import 'package:flare_dart/math/mat2d.dart';
+import 'package:flare_flutter/flare.dart';
+import 'package:flare_flutter/flare_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
-/// A Calculator.
+/// Displays a Circle with a border wich can be selected.
+///
+/// [onTap] event is called, when the user taps on the circle
+/// For [SelectMode.check] the [borderColor] is the check path
+/// and the [selectedColor] is the color of the small animated circle
 class SelectableCircle extends StatelessWidget {
   SelectableCircle({
     Key key,
     @required this.width,
-    this.onSelected,
+    this.onTap,
     Widget child,
     bool isSelected,
     this.color,
@@ -19,13 +26,15 @@ class SelectableCircle extends StatelessWidget {
   })  : isSelected = isSelected ?? false,
         selectMode = selectMode ?? SelectMode.animatedCircle,
         child = child ?? Container(),
+        _controller =
+            MyFlareController(borderColor, selectedColor, selectedBorderColor),
         super(key: key);
 
   /// the width and height of the CircleWidget
   final double width;
 
   /// is called when the circle is tapped
-  final VoidCallback onSelected;
+  final VoidCallback onTap;
 
   /// child displayed on top of the circle
   final Widget child;
@@ -48,10 +57,18 @@ class SelectableCircle extends StatelessWidget {
   /// changes the selectmode
   ///
   /// Possible Values:
-  /// simple: no animation, only SelectedColor is used
-  /// animatedCircle: Animation is used
+  /// simple: no animation, only selectedColors are used
+  /// animatedCircle: Animation is used (default)
   /// check: Check Icon Animation is used
   final SelectMode selectMode;
+
+  final FlareController _controller;
+
+  static const checkAsset = "asdf";
+  static const spinningAsset = "asdf";
+  static const spinningAnimation = "Spinning Circle";
+  static const idleAnimation = "idle";
+  static const checkAnimation = "Check";
 
   @override
   Widget build(BuildContext context) {
@@ -61,19 +78,19 @@ class SelectableCircle extends StatelessWidget {
     final bc = isSelected && selectMode != SelectMode.check
         ? selectedBorderColor ?? Theme.of(context).buttonColor
         : borderColor ?? Theme.of(context).textTheme.body1.color;
-    final borderWidth = isSelected ? 4.0 : 1.0;
+    final borderWidth = isSelected ? 4.0 : 1.5;
 
     return GestureDetector(
       child: Stack(
         children: [
           if (selectMode == SelectMode.animatedCircle)
             isSelected
-                ? _buildSpinningAnimation("Spinning Circle")
+                ? _buildSpinningAnimation(spinningAnimation)
                 // i draw a smaller idle Animation below the not selected Circle
                 // for smoother click feeling, because
                 // flare flashes when it is built with animation,
                 // maybe there is a better solution, or the flare file needs to be updated
-                : _buildSpinningAnimation("idle"),
+                : _buildSpinningAnimation(idleAnimation),
           if (selectMode != SelectMode.animatedCircle || !isSelected)
             _buildCircle(c, bc, borderWidth),
           Container(
@@ -88,8 +105,8 @@ class SelectableCircle extends StatelessWidget {
               child: Align(
                 alignment: Alignment(0.85, 0.85),
                 child: isSelected
-                    ? _buildSpinningAnimation("Check", fixedWidth: 40.0)
-                    : _buildSpinningAnimation("idle", fixedWidth: 0.0),
+                    ? _buildSpinningAnimation(checkAnimation, fixedWidth: 40.0)
+                    : _buildSpinningAnimation(idleAnimation, fixedWidth: 0.0),
               ),
             ),
         ],
@@ -115,25 +132,25 @@ class SelectableCircle extends StatelessWidget {
   }
 
   _select() {
-    if (onSelected != null) {
-      onSelected();
+    if (onTap != null) {
+      onTap();
     }
   }
 
   Widget _buildSpinningAnimation(String animation, {double fixedWidth}) {
     final edgeinsets = (animation == 'idle') ? 10.0 : 4.0;
-    final asset = fixedWidth != null
-        ? "packages/selectable_circle/flare/check.flr"
-        : "packages/selectable_circle/flare/spinning.flr";
-
     return Container(
       padding: EdgeInsets.all(edgeinsets),
       width: fixedWidth ?? width,
       height: fixedWidth ?? width,
       child: Center(
-        child: FlareActor(asset,
+        child: FlareActor(
+            fixedWidth != null
+                ? "packages/selectable_circle/flare/check.flr"
+                : "packages/selectable_circle/flare/spinning.flr",
             alignment: Alignment.center,
             fit: BoxFit.fitHeight,
+            controller: _controller,
             animation: animation),
       ),
     );
@@ -141,3 +158,62 @@ class SelectableCircle extends StatelessWidget {
 }
 
 enum SelectMode { simple, animatedCircle, check }
+
+class MyFlareController with FlareController {
+  MyFlareController(
+      this.borderColor, this.selectedColor, this.selectedBorderColor);
+
+  final Color borderColor;
+  final Color selectedColor;
+  final Color selectedBorderColor;
+  FlutterColorFill _fillSelected;
+  FlutterColorStroke _strokeSelectedBorder;
+  FlutterColorStroke _strokeBorder;
+
+  static const checkShape = "Check";
+  static const spinnerShape = "Loading Spinner";
+  static const ellipseShape = "Green Ellipse";
+  static const whiteCircleShape = "White Circle";
+  static const clippingCircleShape = "Clipping Circle";
+
+  void initialize(FlutterActorArtboard artboard) {
+    if (selectedColor != null) {
+      FlutterActorShape shape = artboard.getNode(ellipseShape);
+      _fillSelected = shape?.fill as FlutterColorFill;
+      if (_fillSelected == null) {
+        shape = artboard.getNode(clippingCircleShape);
+        _fillSelected = shape?.fill as FlutterColorFill;
+      }
+    }
+    if (selectedBorderColor != null) {
+      FlutterActorShape shape = artboard.getNode(checkShape);
+      _strokeSelectedBorder = shape?.stroke as FlutterColorStroke;
+      if (_strokeSelectedBorder == null) {
+        shape = artboard.getNode(spinnerShape);
+        _strokeSelectedBorder = shape?.stroke as FlutterColorStroke;
+      }
+    }
+    if (borderColor != null) {
+      FlutterActorShape shape = artboard.getNode(whiteCircleShape);
+      _strokeBorder = shape?.stroke as FlutterColorStroke;
+    }
+  }
+
+  void setViewTransform(Mat2D viewTransform) {}
+
+  bool advance(FlutterActorArtboard artboard, double elapsed) {
+    // advance is called whenever the flare artboard is about to update (before it draws).
+    if (_fillSelected != null) {
+      _fillSelected.uiColor = selectedColor;
+    }
+    if (_strokeSelectedBorder != null) {
+      _strokeSelectedBorder.uiColor = selectedBorderColor;
+    }
+    if (_strokeBorder != null) {
+      _strokeBorder.uiColor = borderColor;
+    }
+
+    // Return false as we don't need to be called again. You'd return true if you wanted to manually animate some property.
+    return false;
+  }
+}
