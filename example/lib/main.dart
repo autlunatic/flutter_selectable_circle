@@ -38,7 +38,29 @@ class _MyHomeState extends State<MyHome> {
       ),
       body: Column(
         children: <Widget>[
-          Center(child: Text("Custom Colors")),
+          Center(
+              child: Text(
+            "default",
+            style: TextStyle(fontSize: 20.0),
+          )),
+          Center(
+            child: SelectableCircle(
+              width: 80.0,
+              isSelected: _isSelected,
+              onTap: () {
+                setState(() {
+                  _isSelected = !_isSelected;
+                });
+              },
+              child: Text("test"),
+            ),
+          ),
+          Center(
+            child: Text(
+              "Custom Colors",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
           Center(
             child: SelectableCircle(
               width: 80.0,
@@ -55,20 +77,11 @@ class _MyHomeState extends State<MyHome> {
               child: Icon(Icons.star),
             ),
           ),
-          Center(child: Text("default")),
           Center(
-            child: SelectableCircle(
-              width: 80.0,
-              isSelected: _isSelected,
-              onTap: () {
-                setState(() {
-                  _isSelected = !_isSelected;
-                });
-              },
-              child: Text("test"),
-            ),
-          ),
-          Center(child: Text("empty Circle custom colors")),
+              child: Text(
+            "empty Circle custom colors",
+            style: TextStyle(fontSize: 20.0),
+          )),
           Center(
             child: SelectableCircle(
               isSelected: _isSelected3,
@@ -83,13 +96,18 @@ class _MyHomeState extends State<MyHome> {
               },
             ),
           ),
-          Center(child: Text("SelectMode.check Circle")),
+          Center(
+              child: Text(
+            "SelectMode.check with bottomDescription",
+            style: TextStyle(fontSize: 20.0),
+          )),
           Center(
             child: SelectableCircle(
               color: Colors.redAccent,
               borderColor: Colors.red,
               isSelected: _isSelected4,
               selectMode: SelectMode.check,
+              bottomDescription: Text("Description"),
               width: 80.0,
               child: Icon(
                 Icons.tag_faces,
@@ -102,7 +120,11 @@ class _MyHomeState extends State<MyHome> {
               },
             ),
           ),
-          Center(child: Text("SelectMode.check Circle custom colors")),
+          Center(
+              child: Text(
+            "SelectMode.check with custom colors",
+            style: TextStyle(fontSize: 20.0),
+          )),
           Center(
             child: SelectableCircle(
               color: Colors.redAccent,

@@ -8,7 +8,7 @@ A Flutter package for an Circle that can be Selected with animation.
         width: 80.0,
         onSelected: () {
         setState(() {
-            _isSelected2 = !_isSelected2;
+            _isSelected = !_isSelected;
         });
         },
         child: Icon(Icons.star),
@@ -46,7 +46,10 @@ A Flutter package for an Circle that can be Selected with animation.
     /// Color of the border when selected
     final Color selectedBorderColor;
 
-    /// changes the selectmode
+    /// widget that is displayed below the Circle for descriptions
+    final Widget bottomDescription;
+
+    /// changes the select animation
     ///
     /// Possible Values:
     /// simple: no animation, only selectedColor is used
