@@ -1,7 +1,7 @@
 name: selectable_circle
 description: A Circle that can be showed as selected and as not Selected.
   Default selecting starts a flare animation.
-version: 0.1.5
+version: 0.1.6
 author: autlunatic <autlunatic@gmail.com>
 homepage: https://github.com/autlunatic/flutter_selectable_circle
 

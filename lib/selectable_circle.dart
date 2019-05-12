@@ -109,7 +109,7 @@ class SelectableCircle extends StatelessWidget {
                 height: width,
                 width: width,
                 child: Align(
-                  alignment: Alignment(0.85, 0.85),
+                  alignment: Alignment(0.80, 0.80),
                   child: isSelected
                       ? _buildCheckAnimation(checkAnimation)
                       : _buildCheckAnimation(idleAnimation),
@@ -164,7 +164,7 @@ class SelectableCircle extends StatelessWidget {
   Widget _buildCheckAnimation(
     String animation,
   ) {
-    final width = (animation == 'idle') ? 0.0 : 40.0;
+    final width = (animation == 'idle') ? 0.0 : 30.0;
     return Container(
       width: width,
       height: width,
