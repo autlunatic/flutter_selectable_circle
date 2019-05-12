@@ -82,7 +82,8 @@ class SelectableCircle extends StatelessWidget {
     final bc = isSelected && selectMode != SelectMode.check
         ? selectedBorderColor ?? Theme.of(context).buttonColor
         : borderColor ?? Theme.of(context).textTheme.body1.color;
-    final borderWidth = isSelected ? 4.0 : 1.5;
+    final borderWidth =
+        selectMode == SelectMode.simple && isSelected ? 3.0 : 1.5;
 
     return Column(children: [
       GestureDetector(

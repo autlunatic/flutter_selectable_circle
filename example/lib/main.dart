@@ -128,7 +128,7 @@ class _MyHomeState extends State<MyHome> {
           Center(
             child: SelectableCircle(
               color: Colors.redAccent,
-              borderColor: Colors.red,
+              borderColor: Colors.green,
               isSelected: _isSelected5,
               selectMode: SelectMode.check,
               selectedColor: Colors.white,
