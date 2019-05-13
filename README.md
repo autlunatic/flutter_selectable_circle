@@ -4,7 +4,7 @@ A Flutter package for an Circle that can be Selected with animation.
 
 ## How to use
 
-    SelectableCircleText(
+    SelectableCircle(
         width: 80.0,
         onSelected: () {
         setState(() {
