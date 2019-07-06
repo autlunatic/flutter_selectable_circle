@@ -89,14 +89,8 @@ class SelectableCircle extends StatelessWidget {
       GestureDetector(
         child: Stack(
           children: [
-            if (selectMode == SelectMode.animatedCircle)
-              isSelected
-                  ? _buildSpinningCircle(spinningAnimation)
-                  // i draw a smaller idle Animation below the not selected Circle
-                  // for smoother click feeling, because
-                  // flare flashes when it is built with animation,
-                  // maybe there is a better solution, or the flare file needs to be updated
-                  : _buildSpinningCircle(idleAnimation),
+            if (selectMode == SelectMode.animatedCircle && isSelected)
+              _buildSpinningCircle(spinningAnimation),
             if (selectMode != SelectMode.animatedCircle || !isSelected)
               _buildCircle(c, bc, borderWidth),
             Container(
@@ -104,15 +98,13 @@ class SelectableCircle extends StatelessWidget {
               width: width,
               child: Center(child: child),
             ),
-            if (selectMode == SelectMode.check)
+            if (selectMode == SelectMode.check && isSelected)
               Container(
                 height: width,
                 width: width,
                 child: Align(
                   alignment: Alignment(0.80, 0.80),
-                  child: isSelected
-                      ? _buildCheckAnimation(checkAnimation)
-                      : _buildCheckAnimation(idleAnimation),
+                  child: _buildCheckAnimation(checkAnimation),
                 ),
               ),
           ],
@@ -153,6 +145,7 @@ class SelectableCircle extends StatelessWidget {
       height: width,
       child: Center(
         child: FlareActor(spinningAsset,
+            // shouldClip: false,
             alignment: Alignment.center,
             fit: BoxFit.fitHeight,
             controller: _controller,
@@ -199,6 +192,7 @@ class MyFlareController with FlareController {
   static const clippingCircleShape = "Clipping Circle";
 
   void initialize(FlutterActorArtboard artboard) {
+    // artboard.
     if (selectedColor != null) {
       FlutterActorShape shape = artboard.getNode(ellipseShape);
       _fillSelected = shape?.fill as FlutterColorFill;
