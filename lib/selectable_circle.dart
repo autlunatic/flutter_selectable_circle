@@ -215,8 +215,6 @@ class MyFlareController with FlareController {
     }
   }
 
-  void setViewTransform(Mat2D viewTransform) {}
-
   bool advance(FlutterActorArtboard artboard, double elapsed) {
     // advance is called whenever the flare artboard is about to update (before it draws).
     if (_fillSelected != null) {
@@ -232,4 +230,7 @@ class MyFlareController with FlareController {
     // Return false as we don't need to be called again. You'd return true if you wanted to manually animate some property.
     return false;
   }
+
+  @override
+  void setViewTransform(Mat2D viewTransform) {}
 }
